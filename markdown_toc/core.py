@@ -101,3 +101,14 @@ def extract_toc(markdown: str) -> str | None:
     if start == -1 or end == -1 or end < start:
         return None
     return markdown[start + len(TOC_START):end].strip()
+
+
+def headings_to_json(markdown: str, include_h1: bool = False) -> str:
+    """Return the parsed headings as a JSON list of {level, text, anchor}."""
+    import json
+
+    data = [
+        {"level": h.level, "text": h.text, "anchor": h.anchor}
+        for h in parse_headings(markdown, include_h1=include_h1)
+    ]
+    return json.dumps(data, ensure_ascii=False, indent=2)
