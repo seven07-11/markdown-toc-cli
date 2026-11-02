@@ -3,6 +3,7 @@ import unittest
 from markdown_toc.core import (
     build_toc,
     extract_toc,
+    headings_to_json,
     parse_headings,
     render_toc,
     replace_toc,
@@ -86,6 +87,27 @@ class ExtractTocTests(unittest.TestCase):
     def test_returns_content(self):
         md = "<!-- toc -->\n- [A](#a)\n<!-- /toc -->\n"
         self.assertEqual(extract_toc(md), "- [A](#a)")
+
+
+class HeadingsToJsonTests(unittest.TestCase):
+    def test_returns_json_list(self):
+        import json
+
+        md = "## Install\n### From source\n"
+        data = json.loads(headings_to_json(md))
+        self.assertEqual(
+            data,
+            [
+                {"level": 2, "text": "Install", "anchor": "install"},
+                {"level": 3, "text": "From source", "anchor": "from-source"},
+            ],
+        )
+
+    def test_respects_include_h1(self):
+        import json
+
+        data = json.loads(headings_to_json("# Title\n", include_h1=True))
+        self.assertEqual(data[0]["level"], 1)
 
 
 if __name__ == "__main__":
