@@ -26,6 +26,9 @@ python -m markdown_toc README.md
 # Print a TOC for a file
 markdown-toc README.md
 
+# Machine-readable list of headings (level, text, anchor)
+markdown-toc README.md --json
+
 # Write it into the file between the marker comments
 markdown-toc README.md --write
 
