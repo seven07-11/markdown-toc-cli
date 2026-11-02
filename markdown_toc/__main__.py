@@ -6,7 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from .core import build_toc, extract_toc, replace_toc
+from .core import build_toc, extract_toc, headings_to_json, replace_toc
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -26,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
         help="exit 1 when the TOC in the file is out of date",
     )
     parser.add_argument(
+        "--json",
+        action="store_true",
+        help="print the parsed headings as JSON instead of a Markdown list",
+    )
+    parser.add_argument(
         "--include-h1",
         action="store_true",
         help="include the document's top-level heading",
@@ -37,6 +42,10 @@ def main(argv: list[str] | None = None) -> int:
     except OSError as error:
         print(f"markdown-toc: {args.path}: {error}", file=sys.stderr)
         return 2
+
+    if args.json:
+        print(headings_to_json(markdown, include_h1=args.include_h1))
+        return 0
 
     toc = build_toc(markdown, include_h1=args.include_h1)
 
