@@ -1,5 +1,7 @@
 # markdown-toc-cli
 
+[![CI](https://github.com/seven07-11/markdown-toc-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/seven07-11/markdown-toc-cli/actions/workflows/ci.yml)
+
 A tiny command-line tool that generates and verifies a table of contents for Markdown files.
 Pure Python, standard library only.
 
